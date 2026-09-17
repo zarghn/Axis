@@ -2,7 +2,7 @@ import AddButton from "./AddButton";
 import { useState } from "react";
 import AddProject from "./AddProject";
 
-function ProjectTitle({ title, description }) {
+function ProjectTitle({ title, description, onAddProject }) {
   const [isAddingProject, setIsAddingProject] = useState(false);
 
   function handleAddProject() {
@@ -22,7 +22,12 @@ function ProjectTitle({ title, description }) {
 
       <AddButton text="ADD PROJECT" onClick={handleAddProject} />
       <div>
-        {isAddingProject && <AddProject onClose={handleCloseProject} />}
+        {isAddingProject && (
+          <AddProject
+            onClose={handleCloseProject}
+            onAddProject={onAddProject}
+          />
+        )}
       </div>
     </div>
   );
