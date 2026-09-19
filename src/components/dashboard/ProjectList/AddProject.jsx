@@ -85,7 +85,7 @@ export default function AddProject({ onClose, onAddProject }) {
   };
 
   const handleAddProject = () => {
-    const payload = { title, description, date: selectedDate };
+    const payload = { title, description, date: selectedDate, tasks: [] };
     console.log("New project:", payload);
     onAddProject(payload);
     onClose?.();

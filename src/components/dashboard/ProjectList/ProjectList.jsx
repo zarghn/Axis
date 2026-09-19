@@ -2,16 +2,13 @@ import ProjectTitle from "./ProjectTitle";
 import { useState } from "react";
 import ProjectItem from "./ProjectItem";
 
-function ProjectList() {
-  const [projects, setProjects] = useState([]);
-
+function ProjectList({ projects, setProjects, setActiveProject }) {
   function handleAddProject(project) {
     console.log("PROJECT RECEIVED:", project);
 
     setProjects((prevProjects) => [...prevProjects, project]);
   }
-  const [activeProject, setActiveProject] = useState(null);
-  
+
   function handleSelectProject(project) {
     setActiveProject(project);
     console.log("ACTIVE PROJECT:", project);
@@ -28,7 +25,7 @@ function ProjectList() {
       <div>
         {projects.map((project, index) => (
           <ProjectItem
-            key={project.title}
+            key={index}
             project={project}
             isLast={index === projects.length - 1}
             onSelectProject={handleSelectProject}
