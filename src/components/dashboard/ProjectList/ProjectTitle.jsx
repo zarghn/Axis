@@ -2,7 +2,15 @@ import AddButton from "./AddButton";
 import { useState } from "react";
 import AddProject from "./AddProject";
 
-function ProjectTitle({ title, description, onAddProject }) {
+function ProjectTitle({
+  title,
+  description,
+  onAddProject,
+  editingProject,
+  onUpdateProject,
+  onDeleteProject,
+  onCloseEdit,
+}) {
   const [isAddingProject, setIsAddingProject] = useState(false);
 
   function handleAddProject() {
@@ -11,10 +19,9 @@ function ProjectTitle({ title, description, onAddProject }) {
   }
 
   function handleCloseProject() {
-    console.log("Add Project clicked");
     setIsAddingProject(false);
+    onCloseEdit?.();
   }
-
   return (
     <div className="flex items-center justify-between">
       <h2 className="text-xl font-semibold">{title}</h2>
@@ -22,12 +29,15 @@ function ProjectTitle({ title, description, onAddProject }) {
 
       <AddButton text="ADD PROJECT" onClick={handleAddProject} />
       <div>
-        {isAddingProject && (
+        {isAddingProject || editingProject ? (
           <AddProject
             onClose={handleCloseProject}
             onAddProject={onAddProject}
+            onUpdateProject={onUpdateProject}
+            onDeleteProject={onDeleteProject}
+            editingProject={editingProject}
           />
-        )}
+        ) : null}
       </div>
     </div>
   );

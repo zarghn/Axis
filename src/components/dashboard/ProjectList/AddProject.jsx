@@ -1,12 +1,13 @@
 import React, { useState, useMemo } from "react";
+
 import trashIcon from "../../../assets/icons/trash.png";
 import pencilIcon from "../../../assets/icons/pencil.png";
 import beforeIcon from "../../../assets/icons/after.png";
 import afterIcon from "../../../assets/icons/before.png";
 
-// calender logic
-
+// Calendar logic
 const WEEKDAYS = ["MO", "TU", "WE", "TH", "FR", "SA", "SU"];
+
 const MONTH_NAMES = [
   "JANUARY",
   "FEBRUARY",
@@ -31,30 +32,55 @@ function getCalendarCells(year, monthIndex) {
   const cells = [];
 
   for (let i = startOffset - 1; i >= 0; i--) {
-    cells.push({ day: daysInPrevMonth - i, inMonth: false });
+    cells.push({
+      day: daysInPrevMonth - i,
+      inMonth: false,
+    });
   }
+
   for (let d = 1; d <= daysInMonth; d++) {
-    cells.push({ day: d, inMonth: true });
+    cells.push({
+      day: d,
+      inMonth: true,
+    });
   }
+
   let trailing = 1;
+
   while (cells.length % 7 !== 0 || cells.length < 42) {
-    cells.push({ day: trailing++, inMonth: false });
+    cells.push({
+      day: trailing++,
+      inMonth: false,
+    });
   }
 
   return cells;
 }
 
-export default function AddProject({ onClose, onAddProject }) {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+export default function AddProject({
+  onClose,
+  onAddProject,
+  onUpdateProject,
+  onDeleteProject,
+  editingProject,
+}) {
+  const [title, setTitle] = useState(editingProject?.title ?? "");
 
-  const [viewYear, setViewYear] = useState(2025);
-  const [viewMonth, setViewMonth] = useState(5);
-  const [selectedDate, setSelectedDate] = useState({
-    year: 2025,
-    month: 5,
-    day: 11,
-  });
+  const [description, setDescription] = useState(
+    editingProject?.description ?? "",
+  );
+
+  const [viewYear, setViewYear] = useState(editingProject?.date?.year ?? 2025);
+
+  const [viewMonth, setViewMonth] = useState(editingProject?.date?.month ?? 5);
+
+  const [selectedDate, setSelectedDate] = useState(
+    editingProject?.date ?? {
+      year: 2025,
+      month: 5,
+      day: 11,
+    },
+  );
 
   const cells = useMemo(
     () => getCalendarCells(viewYear, viewMonth),
@@ -81,13 +107,43 @@ export default function AddProject({ onClose, onAddProject }) {
 
   const handleSelectDay = (cell) => {
     if (!cell.inMonth) return;
-    setSelectedDate({ year: viewYear, month: viewMonth, day: cell.day });
+
+    setSelectedDate({
+      year: viewYear,
+      month: viewMonth,
+      day: cell.day,
+    });
   };
 
   const handleAddProject = () => {
-    const payload = { title, description, date: selectedDate, tasks: [] };
-    console.log("New project:", payload);
-    onAddProject(payload);
+    // EDIT MODE
+    if (editingProject) {
+      const updatedProject = {
+        ...editingProject,
+        title,
+        description,
+        date: selectedDate,
+      };
+
+      console.log("Updated project:", updatedProject);
+
+      onUpdateProject(updatedProject);
+      onClose?.();
+
+      return;
+    }
+
+    // ADD MODE
+    const newProject = {
+      title,
+      description,
+      date: selectedDate,
+      tasks: [],
+    };
+
+    console.log("New project:", newProject);
+
+    onAddProject(newProject);
     onClose?.();
   };
 
@@ -173,6 +229,7 @@ export default function AddProject({ onClose, onAddProject }) {
                   {cells.map((cell, idx) => {
                     const weekdayIdx = idx % 7;
                     const isWeekend = weekdayIdx >= 5;
+
                     return (
                       <button
                         type="button"
@@ -181,12 +238,17 @@ export default function AddProject({ onClose, onAddProject }) {
                         disabled={!cell.inMonth}
                         className={[
                           "mx-auto w-8 h-8 flex items-center justify-center rounded-full text-xs font-semibold transition",
+
                           !cell.inMonth ? "text-amber-200 cursor-default" : "",
+
                           cell.inMonth && isWeekend ? "text-orange-400" : "",
+
                           cell.inMonth && !isWeekend ? "text-neutral-700" : "",
+
                           isSelected(cell)
                             ? "bg-[#FEEA9A] text-neutral-800 font-bold shadow-sm"
                             : "",
+
                           cell.inMonth && !isSelected(cell)
                             ? "hover:bg-[#FEEA9A]/30"
                             : "",
@@ -202,6 +264,7 @@ export default function AddProject({ onClose, onAddProject }) {
 
             {/* ACTIONS */}
             <div className="flex items-center justify-center gap-3 w-full max-w-[360px] mt-6 md:mt-12">
+              {/* ADD / SAVE */}
               <button
                 type="button"
                 onClick={handleAddProject}
@@ -210,6 +273,7 @@ export default function AddProject({ onClose, onAddProject }) {
                 Add Project
               </button>
 
+              {/* EDIT */}
               <button
                 type="button"
                 aria-label="Edit"
@@ -222,9 +286,14 @@ export default function AddProject({ onClose, onAddProject }) {
                 />
               </button>
 
+              {/* DELETE */}
               <button
                 type="button"
                 aria-label="Delete"
+                onClick={() => {
+                  onDeleteProject();
+                  onClose?.();
+                }}
                 className="w-12 h-12 md:w-10 md:h-10 rounded-full bg-[#FEEA9A] p-1 flex items-center justify-center shrink-0 hover:opacity-90 transition shadow-sm active:scale-95"
               >
                 <img

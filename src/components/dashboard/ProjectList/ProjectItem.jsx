@@ -26,7 +26,7 @@ function formatDate(date) {
   return `${date.day} ${monthName} '${year}`;
 }
 
-function ProjectItem({ project, isLast, onSelectProject }) {
+function ProjectItem({ project, isLast, onSelectProject, onEditProject }) {
   const iconFilterStyle = {
     filter:
       "invert(48%) sepia(0%) saturate(0%) hue-rotate(180deg) brightness(96%) contrast(89%)",
@@ -48,6 +48,7 @@ function ProjectItem({ project, isLast, onSelectProject }) {
                 type="button"
                 className="shrink-0"
                 aria-label="Edit project"
+                onClick={() => onEditProject(project)}
               >
                 <img
                   src={pencilIcon}
