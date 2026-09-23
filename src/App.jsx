@@ -1,16 +1,22 @@
-import React, { useState } from "react";
+import React from "react";
 
 import LoginPage from "./pages/LoginPage";
+
 import DashboardPage from "./pages/DashboardPage";
 
+import { useAuth } from "./context/AuthContext";
+
 export default function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { user } = useAuth();
 
   const handleLogin = (data) => {
     console.log("user info", data);
-    // alert(`wellcome my dear ${data.username}! :)`);
-    setIsLoggedIn(true);
+    // alert(`wellcome in, dear ${data.username}.`);
   };
 
-  return isLoggedIn ? <DashboardPage /> : <LoginPage onLogin={handleLogin} />;
+  return user ? (
+    <DashboardPage />
+  ) : (
+    <LoginPage onLogin={handleLogin} />
+  );
 }

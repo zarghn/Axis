@@ -1,5 +1,5 @@
+import React, { useState } from "react";
 import ProjectTitle from "./ProjectTitle";
-import { useState } from "react";
 import ProjectItem from "./ProjectItem";
 
 function ProjectList({
@@ -7,34 +7,31 @@ function ProjectList({
   setProjects,
   activeProject,
   setActiveProject,
+  searchTerm,
 }) {
   const [editingProject, setEditingProject] = useState(null);
 
   function handleDeleteProject() {
-    setProjects((prevProjects) => {
-      return prevProjects.filter(
-        (project) => project.title !== editingProject?.title,
-      );
-    });
-
+    setProjects((prevProjects) =>
+      prevProjects.filter((project) => project.title !== editingProject?.title)
+    );
     if (activeProject?.title === editingProject?.title) {
       setActiveProject(null);
     }
     setEditingProject(null);
   }
+
   function handleEditProject(project) {
     setEditingProject(project);
   }
 
   function handleAddProject(project) {
-    console.log("PROJECT RECEIVED:", project);
-
     setProjects((prevProjects) => [...prevProjects, project]);
   }
 
   function handleUpdateProject(updatedProject) {
-    setProjects((prevProjects) => {
-      return prevProjects.map((project) => {
+    setProjects((prevProjects) =>
+      prevProjects.map((project) => {
         if (project.title === editingProject?.title) {
           return {
             ...project,
@@ -43,10 +40,9 @@ function ProjectList({
             date: updatedProject.date,
           };
         }
-
         return project;
-      });
-    });
+      })
+    );
 
     if (activeProject?.title === editingProject?.title) {
       setActiveProject((prev) => ({
@@ -56,33 +52,35 @@ function ProjectList({
         date: updatedProject.date,
       }));
     }
-
     setEditingProject(null);
   }
 
   function handleSelectProject(project) {
     setActiveProject(project);
-
-    console.log("ACTIVE PROJECT:", project);
   }
 
+  const filteredProjects = projects.filter((project) =>
+    project.title.toLowerCase().includes(searchTerm?.toLowerCase() || "")
+  );
+
   return (
-    <div>
+    <div className="bg-[#FFFDF5] p-4 sm:p-6 rounded-[32px] shadow-xs flex flex-col gap-3 sm:gap-4">
       <ProjectTitle
-        title="MY LOVELY PROJECT"
-        description="My first React project"
+        title="Team Projects"
+        description=""
         onAddProject={handleAddProject}
         editingProject={editingProject}
         onUpdateProject={handleUpdateProject}
         onDeleteProject={handleDeleteProject}
         onCloseEdit={() => setEditingProject(null)}
       />
-      <div>
-        {projects.map((project, index) => (
+
+      <div className="flex flex-col gap-1 max-h-[350px] sm:max-h-[420px] overflow-y-auto pr-1">
+        {filteredProjects.map((project, index) => (
           <ProjectItem
-            key={index}
+            key={project.id || index}
             project={project}
-            isLast={index === projects.length - 1}
+            isLast={index === filteredProjects.length - 1}
             onSelectProject={handleSelectProject}
             onEditProject={handleEditProject}
           />
