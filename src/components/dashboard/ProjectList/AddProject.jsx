@@ -158,7 +158,7 @@ export default function AddProject({
       {/* MODAL CONTAINER */}
       <div className="relative w-full max-w-5xl bg-white rounded-[35px] md:rounded-[55px] p-6 sm:p-8 md:p-14 shadow-2xl max-h-[95vh] overflow-y-auto md:overflow-visible">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 items-stretch">
-          {/* LEFT COLUMN - TITLE & DESCRIPTION */}
+          {/* TITLE & DESCRIPTION */}
           <div className="flex flex-col gap-5 md:gap-6 h-full">
             <input
               type="text"
@@ -176,10 +176,9 @@ export default function AddProject({
             />
           </div>
 
-          {/* RIGHT COLUMN - CALENDAR & BUTTONS */}
+          {/* CALENDAR & BUTTONS */}
           <div className="flex flex-col justify-between items-center w-full">
             <div className="w-full flex flex-col items-center">
-              {/* Header: Month and Year */}
               <div className="flex items-center justify-center gap-4 my-2 md:mb-5">
                 <button
                   type="button"

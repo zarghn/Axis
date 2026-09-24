@@ -1,1 +1,28 @@
 @import "tailwindcss";
+
+/* FOR FIXING SCROLL AT SITE */
+html,
+body {
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+@media (min-width: 1024px) {
+  html,
+  body {
+    height: 100vh;
+    overflow: hidden !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  ::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+  }
+  * {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}

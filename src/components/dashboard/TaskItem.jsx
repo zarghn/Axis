@@ -22,7 +22,6 @@ function TaskItem({
     return () => document.removeEventListener("click", handleClick);
   }, [value, task, onEditTask]);
 
-  // استایل دایره وضعیت دقیقاً مطابق فیگما
   let statusCircle = "border border-[#FFE885] bg-transparent"; // NOT STARTED
   if (task.status === "DONE") {
     statusCircle = "bg-[#FFE885] border-none"; // DONE
@@ -36,7 +35,6 @@ function TaskItem({
       onClick={() => setSelectedTaskId(task.id)}
       className="flex items-center gap-3 w-full my-2 cursor-pointer select-none px-1"
     >
-      {/* دایره انتخاب وضعیت (خارج از کپسول) */}
       <button
         onClick={(e) => {
           e.stopPropagation();
@@ -46,7 +44,6 @@ function TaskItem({
         className={`w-5 h-5 rounded-full shrink-0 transition-all ${statusCircle}`}
       />
 
-      {/* کپسول باریک خاکستری درون باکس مشکی */}
       <div className="flex-1 flex items-center justify-between bg-[#5E5E5E]/80 hover:bg-[#686868] text-white rounded-full px-3.5 py-1.5 transition-colors min-w-0">
         {isEditing ? (
           <input
@@ -63,7 +60,6 @@ function TaskItem({
         )}
 
         <div className="flex items-center gap-2 shrink-0 ml-2">
-          {/* آیکون ادیت */}
           <button
             onClick={(e) => {
               e.stopPropagation();

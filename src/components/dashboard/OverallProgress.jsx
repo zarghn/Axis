@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 function getWeekStart(date) {
   const currentDate = new Date(date);
@@ -63,8 +63,14 @@ function OverallProgress({ completedSessions = [] }) {
   const lastWeekStart = new Date(thisWeekStart);
   lastWeekStart.setDate(lastWeekStart.getDate() - 7);
 
-  const thisWeekMinutes = getTotalMinutesForWeek(completedSessions, thisWeekStart);
-  const lastWeekMinutes = getTotalMinutesForWeek(completedSessions, lastWeekStart);
+  const thisWeekMinutes = getTotalMinutesForWeek(
+    completedSessions,
+    thisWeekStart,
+  );
+  const lastWeekMinutes = getTotalMinutesForWeek(
+    completedSessions,
+    lastWeekStart,
+  );
   const weeklyDifference = thisWeekMinutes - lastWeekMinutes;
 
   const days = Array.from({ length: 7 }, (_, index) => {
@@ -82,40 +88,41 @@ function OverallProgress({ completedSessions = [] }) {
   const maxMinutes = Math.max(...days.map((day) => day.minutes), 60);
 
   return (
-    <div className="w-full max-w-[320px] bg-[#FFFDF5] p-6 rounded-[32px] shadow-xs font-sans select-none">
-      {/* Header */}
-      <div className="flex justify-between items-baseline mb-6">
+    <div className="w-full max-w-[320px] bg-[#FFF8E7] p-6 rounded-[32px] shadow-xs font-sans select-none flex flex-col justify-between h-full min-h-[280px]">
+      <div className="flex justify-between items-baseline mb-4">
         <h3 className="text-neutral-800 text-base font-semibold tracking-tight">
           Overall Progress
         </h3>
-        <span className="text-4xl font-extrabold text-neutral-900 tracking-tight">
+        <span className="text-3xl sm:text-4xl font-extrabold text-neutral-900 tracking-tight">
           {weeklyDifference >= 0 ? "+" : "-"}
           {formatTime(Math.abs(weeklyDifference))}
         </span>
       </div>
 
-      {/* Chart */}
-      <div className="relative flex justify-between items-end h-28 pt-4">
-        {/* Dashed line */}
-        <div className="absolute top-1/2 left-0 w-full border-b border-dashed border-neutral-200 pointer-events-none" />
+      <div className="relative flex justify-between items-end h-39 pt-6 pb-2">
+        {/* DASH LINE */}
+        <div className="absolute top-1/2 left-0 w-full border-b border-dashed border-neutral-200/80 pointer-events-none" />
 
         {days.map((item) => {
           const isToday = getDateKey(item.date) === getDateKey(today);
-          const barHeight = Math.max(8, Math.round((item.minutes / maxMinutes) * 70));
+          const barHeight = Math.max(
+            16,
+            Math.round((item.minutes / maxMinutes) * 110),
+          );
 
           return (
             <div
               key={getDateKey(item.date)}
-              className="relative flex flex-col items-center group"
+              className="relative flex flex-col items-center group h-full justify-end"
             >
-              {/* Today Badge */}
+              {/* TODAY BADGE */}
               {isToday && (
-                <div className="absolute -top-7 bg-[#FFE885] text-neutral-900 text-[10px] font-bold px-2 py-0.5 rounded-full shadow-xs whitespace-nowrap z-10">
+                <div className="absolute -top-6 bg-[#FFE885] text-neutral-900 text-[10px] font-bold px-2 py-0.5 rounded-full shadow-xs whitespace-nowrap z-10">
                   {`${Math.floor(todayMinutes / 60)}h ${todayMinutes % 60}m`}
                 </div>
               )}
 
-              {/* Bar */}
+              {/* BAR */}
               <div
                 style={{ height: `${barHeight}px` }}
                 className={`w-1.5 rounded-full z-0 transition-all duration-300 ${
@@ -123,14 +130,14 @@ function OverallProgress({ completedSessions = [] }) {
                     ? "bg-[#FFE885]"
                     : item.minutes > 0
                       ? "bg-neutral-800"
-                      : "bg-neutral-300"
+                      : "bg-neutral-300/80"
                 }`}
               />
 
-              {/* Dot */}
-              <div className="w-1.5 h-1.5 rounded-full mt-2 mb-1 bg-neutral-800" />
+              {/* DOTS */}
+              <div className="w-1.5 h-1.5 rounded-full mt-3 mb-1 bg-neutral-800" />
 
-              {/* Day Label */}
+              {/* DAY DOTS */}
               <span className="text-neutral-600 text-xs font-medium">
                 {item.day}
               </span>

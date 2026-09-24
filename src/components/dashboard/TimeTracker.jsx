@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import "./TimeTracker.css";
 
 function TimeTracker({
   completedSessions,
@@ -71,61 +72,75 @@ function TimeTracker({
   }
 
   const progressPercentage = ((3600 - seconds) / 3600) * 100;
-  const strokeDashoffset = 276.46 - (276.46 * progressPercentage) / 100;
+  const strokeDashoffset = 238.76 - (238.76 * progressPercentage) / 100;
 
   return (
-    <div className="w-full max-w-[280px] bg-[#FFFDF5] rounded-[32px] p-6 flex flex-col items-center shadow-xs font-sans">
-      {/* Timer Circle */}
-      <div className="relative w-44 h-44 flex items-center justify-center mb-4">
-        <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90">
-          <circle cx="50" cy="50" r="36" fill="#ffffff" />
+    <div className="time-tracker-card">
+      <div className="timer-display">
+        <svg viewBox="0 0 100 100" className="progress-ring">
+          <circle cx="50" cy="50" r="30" fill="#ffffff" />
+
           <circle
             cx="50"
             cy="50"
-            r="44"
+            r="38"
             fill="none"
-            stroke="#1a1a1a"
-            strokeWidth="5"
-            strokeDasharray="0.8 1.8"
+            stroke="#262626"
+            strokeWidth="3.5"
+            strokeDasharray="0.6 1.4"
           />
+
+          {/* YELLOW CIRCLE*/}
           <circle
             cx="50"
             cy="50"
-            r="44"
+            r="38"
             fill="none"
             stroke="#FFE885"
-            strokeWidth="12"
-            strokeDasharray="276.46"
+            strokeWidth="8"
+            strokeDasharray="238.76"
             strokeDashoffset={strokeDashoffset}
             strokeLinecap="butt"
-            className="transition-[stroke-dashoffset] duration-300 ease-out"
+            className="progress-bar"
           />
         </svg>
 
-        <div className="absolute text-center pointer-events-none">
-          <p className="text-3xl font-bold text-neutral-900 leading-none tracking-tight">
+        <div className="time-text-container">
+          <p className="time-text">
             {Math.floor(seconds / 60)}:{String(seconds % 60).padStart(2, "0")}
           </p>
-          <span className="text-xs text-neutral-400 mt-1 block">work time</span>
+          <span className="sub-text">work time</span>
         </div>
       </div>
 
-      {/* Controls Row */}
-      <div className="w-full flex items-center justify-between gap-2">
-        {/* Task Dropdown */}
-        <div className="relative flex-1">
-          <div
+      <div className="controls-row">
+        {/* SELECT TASKS */}
+        <div className="task-select-wrapper">
+          <button
+            type="button"
             onClick={() => setIsTaskOpen((prev) => !prev)}
-            className="bg-white px-3 py-2 rounded-full flex items-center justify-between text-xs text-neutral-700 cursor-pointer shadow-xs border border-neutral-100"
+            className="task-select"
           >
-            <span className="truncate">{selectedTask ? selectedTask.title : "select task"}</span>
-            <svg className="w-3.5 h-3.5 text-neutral-500 shrink-0" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M7 10l5 5 5-5z" />
+            <span className="task-title">
+              {selectedTask ? selectedTask.title : "select task"}
+            </span>
+            <svg
+              className="chevron-icon"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M19 9l-7 7-7-7"
+              />
             </svg>
-          </div>
+          </button>
 
           {isTaskOpen && (
-            <div className="absolute left-0 right-0 top-10 bg-white border border-neutral-100 rounded-2xl shadow-lg max-h-32 overflow-y-auto z-20 p-1">
+            <div className="task-dropdown font-sans">
               {allTasks.map((task) => (
                 <button
                   key={task.id}
@@ -134,27 +149,27 @@ function TimeTracker({
                     setSelectedTaskId(task.id);
                     setIsTaskOpen(false);
                   }}
-                  className="w-full text-left text-xs px-3 py-1.5 hover:bg-amber-50 rounded-lg text-neutral-700 transition"
+                  className="dropdown-item"
                 >
                   {task.title}
                 </button>
               ))}
               {allTasks.length === 0 && (
-                <p className="text-[10px] text-neutral-400 p-2 text-center">No tasks available</p>
+                <p className="dropdown-empty">No tasks available</p>
               )}
             </div>
           )}
         </div>
 
-        {/* Buttons Group */}
-        <div className="flex items-center gap-1.5 shrink-0">
+        {/* BUTTONS S/P/R */}
+        <div className="buttons-group">
           <button
             type="button"
             onClick={handleStart}
             aria-label="Start"
-            className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-neutral-900 shadow-xs hover:bg-neutral-50 active:scale-95 transition"
+            className="btn-icon"
           >
-            <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+            <svg className="play-icon" viewBox="0 0 24 24">
               <path d="M8 5v14l11-7z" />
             </svg>
           </button>
@@ -163,9 +178,9 @@ function TimeTracker({
             type="button"
             onClick={handlePause}
             aria-label="Pause"
-            className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-neutral-900 shadow-xs hover:bg-neutral-50 active:scale-95 transition"
+            className="btn-icon"
           >
-            <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+            <svg className="pause-icon" viewBox="0 0 24 24">
               <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
             </svg>
           </button>
@@ -174,10 +189,20 @@ function TimeTracker({
             type="button"
             onClick={handleReset}
             aria-label="Reset"
-            className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-neutral-900 shadow-xs hover:bg-neutral-50 active:scale-95 transition"
+            className="btn-icon"
           >
-            <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z" />
+            <svg
+              className="reset-icon"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M4 4v5h5M20 20v-5h-5M4 9a9 9 0 0115.36-5.36M20 15a9 9 0 01-15.36 5.36"
+              />
             </svg>
           </button>
         </div>

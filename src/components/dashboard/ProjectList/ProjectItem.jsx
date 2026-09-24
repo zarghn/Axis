@@ -20,24 +20,21 @@ const MONTH_NAMES = [
 function formatDate(date) {
   if (!date) return "";
   const monthName = MONTH_NAMES[date.month];
-  const year = String(date.year).slice(-2);
-  return `${date.day} ${monthName} '${year}`;
+  return `${date.day} ${monthName}`;
 }
 
 function ProjectItem({ project, isLast, onSelectProject, onEditProject }) {
   return (
     <div className="flex flex-col">
-      <div className="flex items-stretch gap-3 py-3 group hover:bg-black/[0.02] rounded-xl px-2 transition-colors cursor-pointer">
-        {/* Yellow accent bar */}
-        <div className="w-1.5 bg-[#FFE885] rounded-full shrink-0 my-0.5" />
+      <div className="flex items-stretch gap-2.5 py-2 px-1 group hover:bg-black/[0.015] rounded-lg transition-colors cursor-pointer">
+        <div className="w-[5px] bg-[#FFE885] rounded-full shrink-0 my-0.5" />
 
         <div className="flex-1 min-w-0 flex flex-col justify-between">
-          <div className="flex items-baseline justify-between gap-2">
-            <div className="flex items-center gap-2 min-w-0">
-              {/* Edit Button */}
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-1 min-w-0">
               <button
                 type="button"
-                className="shrink-0 p-1 rounded-full hover:bg-neutral-200/60 transition"
+                className="shrink-0 p-0.5"
                 aria-label="Edit project"
                 onClick={(e) => {
                   e.stopPropagation();
@@ -47,39 +44,37 @@ function ProjectItem({ project, isLast, onSelectProject, onEditProject }) {
                 <img
                   src={pencilIcon}
                   alt=""
-                  className="w-3.5 h-3.5 object-contain opacity-60 hover:opacity-100 transition-opacity"
+                  className="w-3 h-3 object-contain opacity-60 hover:opacity-100 transition-opacity"
                 />
               </button>
 
-              {/* View Tasks Button */}
               <button
                 type="button"
-                className="shrink-0 p-1 rounded-full hover:bg-neutral-200/60 transition"
+                className="shrink-0 p-0.5"
                 aria-label="View tasks"
                 onClick={() => onSelectProject(project)}
               >
                 <img
                   src={tasksIcon}
                   alt=""
-                  className="w-3.5 h-3.5 object-contain opacity-60 hover:opacity-100 transition-opacity"
+                  className="w-3 h-3 object-contain opacity-60 hover:opacity-100 transition-opacity"
                 />
               </button>
+              {/* TITLE */}
 
-              {/* Title */}
-              <h3 className="text-neutral-800 text-base font-medium truncate">
+              <h3 className="text-neutral-900 text-[14px] font-semibold truncate ml-0.5 tracking-tight">
                 {project.title}
               </h3>
             </div>
 
-            {/* Date */}
-            <span className="text-neutral-900 text-xs font-bold shrink-0 uppercase tracking-tight">
+            <span className="text-neutral-900 text-[13px] font-semibold shrink-0 uppercase tracking-tight">
               {formatDate(project.date)}
             </span>
           </div>
 
-          {/* Description */}
+          {/* DESCRIPTION */}
           {project.description && (
-            <p className="text-neutral-400 text-xs leading-relaxed mt-1 line-clamp-2">
+            <p className="text-[#a1a1a1] text-[11px] leading-tight mt-1 line-clamp-2 pr-1 font-normal">
               {project.description}
             </p>
           )}

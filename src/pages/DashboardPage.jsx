@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import Header from "../components/dashboard/Header";
 import UserProfile from "../components/dashboard/UserProfile";
 import ProjectList from "../components/dashboard/ProjectList/ProjectList";
@@ -8,6 +7,8 @@ import StatusAll from "../components/dashboard/statusAll";
 import TimeTracker from "../components/dashboard/TimeTracker";
 import OverallProgress from "../components/dashboard/OverallProgress";
 import CalendarCard from "../components/dashboard/CalendarCard";
+import Background from "../components/dashboard/Background";
+import bgImage from "../assets/images/bg.png";
 
 function DashboardPage() {
   const [activeProject, setActiveProject] = useState(null);
@@ -29,26 +30,26 @@ function DashboardPage() {
   useEffect(() => {
     localStorage.setItem(
       "completedSessions",
-      JSON.stringify(completedSessions)
+      JSON.stringify(completedSessions),
     );
   }, [completedSessions]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-l from-[#FFE27A] via-[#FFF8D6] to-[#FFFDF3] pb-10 text-neutral-800 font-sans">
-      {/* هدر بالای صفحه */}
-      <div className="sticky top-0 z-50 backdrop-blur-md bg-transparent px-4 py-3">
-        <div className="max-w-6xl mx-auto">
+    <div
+      className="relative min-h-screen lg:h-screen w-full text-neutral-800 font-sans lg:overflow-hidden overflow-y-auto bg-cover bg-center bg-no-repeat"
+      style={{ backgroundImage: `url(${bgImage})` }}
+    >
+      <Background />
+      <div className="relative z-10 h-full flex flex-col justify-between p-4 md:p-6 max-w-7xl mx-auto overflow-hidden">
+        <div className="w-full shrink-0">
           <Header searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
         </div>
-      </div>
 
-      <div className="max-w-6xl mx-auto px-4 flex flex-col gap-5 mt-1">
-        {/* عنوان و دکمه ساخت پروژه */}
-        <div className="flex flex-row items-center justify-between gap-2">
+        {/* Title + Add Project  */}
+        <div className="flex flex-row items-center justify-between my-2 shrink-0">
           <h1 className="font-serif text-2xl sm:text-3xl md:text-4xl font-bold text-neutral-900 tracking-tight">
             Welcome in, Zahra.
           </h1>
-
           <button
             type="button"
             onClick={() => {
@@ -61,26 +62,20 @@ function DashboardPage() {
           </button>
         </div>
 
-        {/* نوار وضعیت فیلترها (StatusAll) - با قابلیت اسکرول افقی در موبایل برای حفظ یک خط بودن */}
-        <div className="w-full overflow-x-auto no-scrollbar">
+        {/* Status */}
+        <div className="w-full shrink-0">
           <StatusAll projects={projects} />
         </div>
 
-        {/* چیدمان کارت‌ها: در دسکتاپ 4 ستونه، در موبایل تک ستونه با ترتیب دقیق تصویر */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 items-start">
-          
-          {/* ۱. کارت تصویر پروفایل */}
-          <div className="w-full order-1">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-stretch flex-1 overflow-hidden my-2">
+          {/*  1 / User Profile + Progress */}
+          <div className="flex flex-col gap-4 justify-between h-full overflow-hidden">
             <UserProfile />
-          </div>
-
-          {/* ۲. کارت پیشرفت کلی (Overall Progress) */}
-          <div className="w-full order-2 lg:order-2">
             <OverallProgress completedSessions={completedSessions} />
           </div>
 
-          {/* ۳. لیست پروژه‌ها (Team Projects) */}
-          <div className="w-full order-3 lg:order-3">
+          {/* 2 / Team Projects */}
+          <div className="flex flex-col gap-4 h-full overflow-y-auto pr-1">
             <ProjectList
               projects={projects}
               setProjects={setProjects}
@@ -90,8 +85,8 @@ function DashboardPage() {
             />
           </div>
 
-          {/* ۴. تایمر تمرکز (TimeTracker) */}
-          <div className="w-full order-4 lg:order-4">
+          {/* 3 / Timer & Calendar */}
+          <div className="flex flex-col gap-4 justify-between h-full overflow-hidden">
             <TimeTracker
               completedSessions={completedSessions}
               setCompletedSessions={setCompletedSessions}
@@ -99,15 +94,11 @@ function DashboardPage() {
               setSelectedTaskId={setSelectedTaskId}
               projects={projects}
             />
-          </div>
-
-          {/* ۵. تقویم (Calendar) */}
-          <div className="w-full order-5 lg:order-5">
             <CalendarCard />
           </div>
 
-          {/* ۶. لیست تسک‌ها (TaskList) */}
-          <div className="w-full order-6 lg:order-6">
+          {/* 4 / Tasks List */}
+          <div className="flex flex-col gap-4 h-full overflow-y-auto pr-1">
             <TaskList
               activeProject={activeProject}
               projects={projects}
@@ -116,11 +107,10 @@ function DashboardPage() {
               setSelectedTaskId={setSelectedTaskId}
             />
           </div>
-
         </div>
 
-        {/* متن فوتر پایین صفحه - فقط در موبایل */}
-        <div className="text-center text-xs font-serif text-neutral-600 mt-6 md:hidden">
+        {/* Footer */}
+        <div className="text-center text-xs font-serif text-neutral-600 md:hidden shrink-0">
           well done ! have a good day :)
         </div>
       </div>

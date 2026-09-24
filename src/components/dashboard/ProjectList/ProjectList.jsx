@@ -11,6 +11,10 @@ function ProjectList({
 }) {
   const [editingProject, setEditingProject] = useState(null);
 
+  function handleAddProject(project) {
+    setProjects((prevProjects) => [...prevProjects, project]);
+  }
+
   function handleDeleteProject() {
     setProjects((prevProjects) =>
       prevProjects.filter((project) => project.title !== editingProject?.title)
@@ -23,10 +27,6 @@ function ProjectList({
 
   function handleEditProject(project) {
     setEditingProject(project);
-  }
-
-  function handleAddProject(project) {
-    setProjects((prevProjects) => [...prevProjects, project]);
   }
 
   function handleUpdateProject(updatedProject) {
@@ -64,7 +64,7 @@ function ProjectList({
   );
 
   return (
-    <div className="bg-[#FFFDF5] p-4 sm:p-6 rounded-[32px] shadow-xs flex flex-col gap-3 sm:gap-4">
+    <div className="bg-[#FFF8E7] p-5 sm:p-6 rounded-[32px] shadow-sm flex flex-col justify-between h-full w-full overflow-hidden">
       <ProjectTitle
         title="Team Projects"
         description=""
@@ -75,7 +75,8 @@ function ProjectList({
         onCloseEdit={() => setEditingProject(null)}
       />
 
-      <div className="flex flex-col gap-1 max-h-[350px] sm:max-h-[420px] overflow-y-auto pr-1">
+      {/* FOR SECRET SCROLL :) */}
+      <div className="flex flex-col gap-1 overflow-y-auto overflow-x-hidden flex-1 min-h-0 mt-3 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden [&::-webkit-scrollbar]:w-0 [&::-webkit-scrollbar]:h-0">
         {filteredProjects.map((project, index) => (
           <ProjectItem
             key={project.id || index}

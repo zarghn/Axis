@@ -1,54 +1,61 @@
 .time-tracker-card {
-  width: 280px;
-  background-color: #fff9e6;
+  width: 100%;
+  height: 100%;
+  min-height: 280px;
+  background-color: #fff8e7;
   border-radius: 32px;
-  padding: 28px 24px 20px 24px;
+  padding: 20px 24px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
   box-sizing: border-box;
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 .timer-display {
   position: relative;
-  width: 190px;
-  height: 190px;
+  width: 176px;
+  height: 176px;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 24px;
+  margin: auto 0;
 }
 
 .progress-ring {
   width: 100%;
   height: 100%;
   transform: rotate(-90deg);
+  overflow: visible;
 }
 
 .progress-bar {
-  transition: stroke-dashoffset 0.3s ease;
+  transition: stroke-dashoffset 0.3s ease-out;
 }
 
 .time-text-container {
   position: absolute;
   text-align: center;
   pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .time-text {
-  font-size: 34px;
-  font-weight: 700;
-  color: #000000;
+  font-size: 32px;
+  font-weight: 900;
+  color: #171717;
   margin: 0;
   line-height: 1;
   letter-spacing: -0.5px;
 }
 
 .sub-text {
-  font-size: 15px;
-  color: #757575;
+  font-size: 12px;
+  color: #a3a3a3;
   margin-top: 6px;
   display: block;
   font-weight: 400;
@@ -59,50 +66,102 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+.task-select-wrapper {
+  position: relative;
+  flex: 1;
 }
 
 .task-select {
+  width: 100%;
   background-color: #ffffff;
-  padding: 8px 6px;
-  border-radius: 20px;
+  padding: 8px 12px;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 500;
+  color: #404040;
+  cursor: pointer;
+  border: 1px solid rgba(245, 245, 245, 0.8);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  transition: background-color 0.15s ease;
+}
+
+.task-select:hover {
+  background-color: #fafafa;
+}
+
+.task-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chevron-icon {
+  width: 14px;
+  height: 14px;
+  color: #171717;
+  flex-shrink: 0;
+  margin-left: 4px;
+}
+
+.task-dropdown {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 44px;
+  background-color: #ffffff;
+  border: 1px solid #f5f5f5;
+  border-radius: 16px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  max-height: 144px;
+  overflow-y: auto;
+  z-index: 30;
+  padding: 6px;
+}
+
+.dropdown-item {
+  width: 100%;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 8px 12px;
+  color: #404040;
+  background: transparent;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.dropdown-item:hover {
+  background-color: #fffbebf5;
+}
+
+.dropdown-empty {
+  font-size: 11px;
+  color: #a3a3a3;
+  padding: 8px;
+  text-align: center;
+  margin: 0;
+}
+
+.buttons-group {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 13px;
-  color: #444444;
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
-}
-.task-dropdown {
-  height: 28px;
-  overflow-y: auto;
-
-  padding: 0 8px;
-}
-.task-dropdown button {
-  width: 100%;
-  height: 28px;
-
-  border: none;
-  background: transparent;
-
-  padding: 0 4px;
-
-  text-align: left;
-  font-size: 12px;
-  color: #444;
-
-  cursor: pointer;
-}
-.buttons-group {
-  display: flex;
-  gap: 8px;
+  flex-shrink: 0;
 }
 
 .btn-icon {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   border: none;
   background-color: #ffffff;
@@ -110,15 +169,33 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: #000000;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+  color: #171717;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
   transition: all 0.15s ease;
 }
 
 .btn-icon:hover {
-  background-color: #f7f7f7;
+  background-color: #f5f5f5;
 }
 
 .btn-icon:active {
-  transform: scale(0.94);
+  transform: scale(0.95);
+}
+
+.play-icon {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
+  margin-left: 2px;
+}
+
+.pause-icon {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
+}
+
+.reset-icon {
+  width: 14px;
+  height: 14px;
 }
