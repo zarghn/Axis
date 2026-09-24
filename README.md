@@ -6,8 +6,6 @@ This project was built as a learning project to practice React fundamentals, com
 
 > 🎨 The UI is based on a custom Figma design and rebuilt pixel-by-pixel as a fully functional React app.
 
----
-
 <br/>
 
 ## <h3 align="center">📱 Project Preview</h3>
