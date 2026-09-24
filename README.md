@@ -9,6 +9,8 @@
 Axis is a personal dashboard for managing projects, tasks, and time, built with **React** and **Tailwind CSS**.
 
 This is my first serious project with React — no course, no tutorial, I just jumped straight into writing code and learned as I went. Plenty of bugs, plenty of debugging, and I finally landed on something I'm proud of 🎉
+
+
 <img width="1422" height="900" alt="desktop (6) (1)" src="https://github.com/user-attachments/assets/90f2d0d3-6546-49db-8335-e36bcccf1dea" />
 https://www.figma.com/design/8QkJgJJFzWFQ8AWYl9S1C8/AXIS?t=Tg3lPiKSKVfWwwEp-0
 ## ✨ Features
